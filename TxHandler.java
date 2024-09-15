@@ -6,6 +6,17 @@ public class TxHandler {
 	 */
 	public TxHandler(UTXOPool utxoPool) {
 		// IMPLEMENT THIS
+
+		this.utxoPool = new UTXOPool(utxoPool); // create a defensive copy
+
+		// Victor's Notes
+		/* TxHandler should only be 1 line so I think its done now./
+		 * As for the rest of the code I am very confused. 
+		 * After searching through all the files I don't see a "main" method anywhere so 
+		 * I'm not sure how this code is going to compiile/execute even though this the only file 
+		 * asking us to implenment sttuff.
+		 * Help needed.
+		 */
 	}
 
 	/* Returns true if 
