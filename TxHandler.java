@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public class TxHandler {
 
 	/* Creates a public ledger whose current UTXOPool (collection of unspent 
@@ -9,7 +11,7 @@ public class TxHandler {
 
 		this.utxoPool = new UTXOPool(utxoPool); // create a defensive copy
 
-		// Victor's Notes
+		// Victor's Notes ---------------------------------------------------------
 		/* TxHandler should only be 1 line so I think its done now./
 		 * As for the rest of the code I am very confused. 
 		 * After searching through all the files I don't see a "main" method anywhere so 
@@ -31,8 +33,17 @@ public class TxHandler {
 
 	public boolean isValidTx(Transaction tx) {
 		// IMPLEMENT THIS
-		return false;
-	}
+
+		// WIP not done yet -Victor -------------------------------------------------
+        UTXOPool tempPool = new UTXOPool(utxoPool); // this is the current UTXO pool
+
+		// Keep track of claimed UTXOs
+        for (Transaction.Input TXinput : tx.getInputs()) { // for each input in tx
+            UTXO utxoUnclaimed = new UTXO(TXinput.previousHash, TXinput.outputIndex); // create a UTXO object
+        }
+
+        return false; // part of starter code
+    }
 
 	/* Handles each epoch by receiving an unordered array of proposed 
 	 * transactions, checking each transaction for correctness, 
