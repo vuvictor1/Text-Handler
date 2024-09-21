@@ -8,7 +8,6 @@ public class TxHandler {
 	 */
 	public TxHandler(UTXOPool utxoPool) {
 		// IMPLEMENT THIS
-
 		this.utxoPool = new UTXOPool(utxoPool); // create a defensive copy
 
 		// Victor's Notes ---------------------------------------------------------
@@ -30,19 +29,33 @@ public class TxHandler {
 	        its output values;
 	   and false otherwise.
 	 */
-
 	public boolean isValidTx(Transaction tx) {
 		// IMPLEMENT THIS
 
 		// WIP not done yet -Victor -------------------------------------------------
-        UTXOPool tempPool = new UTXOPool(utxoPool); // this is the current UTXO pool
+        UTXOPool currentPool = new UTXOPool(utxoPool); // this is the current UTXO pool
+		HashSet<UTXO> utxoClaimed = new HashSet<>(); // created hash set to track for unclaimed UTXOs
+		double inputSum = 0; // sum of input values
+        double outputSum = 0; // sum of output values
 
 		// Keep track of claimed UTXOs
-        for (Transaction.Input TXinput : tx.getInputs()) { // for each input in tx
-            UTXO utxoUnclaimed = new UTXO(TXinput.previousHash, TXinput.outputIndex); // create a UTXO object
+        for (Transaction.Input inputTX : tx.getInputs()) { // for each input in tx
+            UTXO utxoUnclaimed = new UTXO(inputTX.previousHash, inputTX.outputIndex); // create a UTXO object
+
+			 // If current pool does not contain the UTXO, return false
+			 if (!currentPool.contains(utxoUnclaimed)) {
+				return false;
+			}
+
+			// Validate the signature on each input
+			Transaction.Output output = currentPool.getTxOutput(utxoUnclaimed); // get the output of the UTXO of current pool
+			// If the signature cannot be verified it is false
+			if (!security.verifySignature(output.pkey, tx.getRawDataToSign(tx.getInputs().indexOf(inputTX)), inputTX.sig)) {
+				return false;
+			}
         }
 
-        return false; // part of starter code
+        return false; // part of starter code, keep for now
     }
 
 	/* Handles each epoch by receiving an unordered array of proposed 
