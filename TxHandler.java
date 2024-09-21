@@ -11,12 +11,12 @@ public class TxHandler {
 		this.utxoPool = new UTXOPool(utxoPool); // create a defensive copy
 
 		// Victor's Notes ---------------------------------------------------------
-		/* TxHandler should only be 1 line so I think its done now./
+		/* TxHandler should only be 1 line so I think its done now
 		 * As for the rest of the code I am very confused. 
 		 * After searching through all the files I don't see a "main" method anywhere so 
 		 * I'm not sure how this code is going to compiile/execute even though this the only file 
 		 * asking us to implenment sttuff.
-		 * Help needed.
+		 * Help needed!!!!
 		 */
 	}
 
@@ -53,9 +53,14 @@ public class TxHandler {
 			if (!security.verifySignature(output.pkey, tx.getRawDataToSign(tx.getInputs().indexOf(inputTX)), inputTX.sig)) {
 				return false;
 			}
-        }
 
-        return false; // part of starter code, keep for now
+			// If the UTXO is claimed multiple times, return false
+			if (utxoClaimed.contains(utxoUnclaimed)) {
+				return false;
+        	}
+		}
+	
+    	return false; // part of starter code, keep for now
     }
 
 	/* Handles each epoch by receiving an unordered array of proposed 
